@@ -2,6 +2,26 @@ import { it,expect } from 'vitest';
 import { createPhrasePuzzle } from './phrase-puzzle';
 import { findHeadBlocker, headTip, pointTouchesShape } from './engine';
 
+it('four-letter playable layout keeps all bodies and places reversed heads inside their own strokes',()=>{
+  const sample=createPhrasePuzzle('four-per-line'),play=createPhrasePuzzle('four-per-line-playable');
+  expect(play.letter.split(' / ').map(line=>[...line].length)).toEqual([3,3,4]);
+  expect(play.arrows).toHaveLength(37);expect(play.targets).toEqual(sample.targets);
+  expect(play.width).toBe(1230);
+  const changed:string[]=[];
+  for(const arrow of play.arrows){
+    const previous=sample.arrows.find(a=>a.id===arrow.id)!;
+    expect(arrow.shape).toEqual(previous.shape);
+    expect(pointTouchesShape(headTip(arrow),arrow.shape!),arrow.id).toBe(true);
+    if(arrow.direction.x!==previous.direction.x||arrow.direction.y!==previous.direction.y){
+      changed.push(arrow.id);
+      expect(arrow.points[0]).toEqual(previous.points.at(-1));
+      expect(arrow.points.at(-1)).toEqual(previous.points[0]);
+      expect(arrow.head!.capCenter).toEqual(previous.points[0]);
+    }
+  }
+  expect(changed).toEqual(['jeo-jieut-bar','jeo-jieut-left','jeo-eo-bar','him-i']);
+});
+
 it('우리가 저마다 / 힘에겨운: 37 real pen bodies, four fixed circles, interior heads',()=>{
   const puzzle=createPhrasePuzzle();
   expect(puzzle.arrows).toHaveLength(37);expect(puzzle.targets).toHaveLength(4);

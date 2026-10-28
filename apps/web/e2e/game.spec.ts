@@ -14,7 +14,7 @@ async function legalIds(page:Page){
   const ids=await page.locator('[data-arrow]').evaluateAll(elements=>elements.map(e=>e.getAttribute('data-arrow')));
   return page.evaluate(async ids=>{
     const source='/src/game/phrase-puzzle.ts',engine='/src/game/engine.ts';
-    const p=(await import(/* @vite-ignore */source)).createPhrasePuzzle();
+    const p=(await import(/* @vite-ignore */source)).createPhrasePuzzle('four-per-line-playable');
     const query=await import(/* @vite-ignore */engine);
     const remaining=p.arrows.filter((a:{id:string})=>ids.includes(a.id));
     return remaining.filter((a:unknown)=>query.findHeadBlocker(a,remaining,p)===null).map((a:{id:string})=>a.id) as string[];

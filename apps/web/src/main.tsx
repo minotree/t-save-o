@@ -8,7 +8,10 @@ import { MoodPicker } from './MoodPicker';
 import { moods } from './moods';
 import { PlayGuide } from './CuteScreens';
 import type { MoodId } from './moods';
+import { createPhrasePuzzle } from './game/phrase-puzzle';
 import './style.css';
+
+const fourLetterPuzzle=createPhrasePuzzle('four-per-line-playable');
 
 function App() {
   const [tossPreview,setTossPreview] = useState(true);
@@ -38,7 +41,7 @@ function App() {
     <main ref={contentRef} className={started ? 'play-screen' : 'home-screen'}>
     {started ? <>
       <nav className="play-nav" aria-label="게임 메뉴"><button className="home-link" onClick={() => setStarted(false)}>← 홈으로</button><span className="active-mood">{mood.name}</span></nav>
-      {mood.id==='cute'?<EasyCourse onHome={()=>setStarted(false)}/>:<Game onHome={()=>setStarted(false)}/>}
+      {mood.id==='cute'?<EasyCourse onHome={()=>setStarted(false)}/>:<Game puzzle={mood.id==='modern'?fourLetterPuzzle:undefined} onHome={()=>setStarted(false)}/>}
     </> : <div className={`home-content ${mood.id==='cute'?'cute-home':''}`}>
       <header className="home-heading">
         <span className="home-badge">톡톡! 한글 화살표 퍼즐</span>
