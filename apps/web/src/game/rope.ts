@@ -1,7 +1,7 @@
 import type { Arrow, Point, Puzzle } from './engine';
 import { flattenPath } from './vector-shape';
 
-export const PULL_MS=800;
+export const PULL_MS=650;
 export const BUMP_MS=900;
 export const BUMP_CONTACT_RATIO=.42;
 export function bumpHasContact(progress:number,distance:number):boolean {

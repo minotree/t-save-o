@@ -73,7 +73,7 @@ test('우리가 저마다 힘에겨운: mouse/touch, blocked return, full rescue
 test('interior high contrast heads and rope pulling: fixed body, tail clip, straight connected head',async({page,isMobile},testInfo)=>{
   await page.goto('/');await page.getByRole('radio',{name:/모던/}).check();await page.getByRole('button',{name:'게임 시작'}).click();
   const item=page.locator('[data-arrow="wu-u-bar"]'),head=item.locator('.arrow-head'),body=item.locator('.arrow-body');
-  await expect(head).toHaveAttribute('fill','#FF8A80');
+  await expect(head).toHaveAttribute('fill','#FFFFFF');
   const before=await head.evaluate(e=>{const m=(e as SVGPathElement).getScreenCTM()!;return {x:m.e,y:m.f,ux:m.a,uy:m.b};});
   const initialBody=await body.getAttribute('d'),group=await item.getAttribute('transform');
   await choose(page,item,isMobile);await expect(item).toHaveClass(/is-exiting/);
@@ -108,16 +108,16 @@ test('blocked pen turns coral AT contact, returns red, then recovers after a pau
   const approach=Number(await item.getAttribute('data-travel'));expect(approach).toBeGreaterThan(0);expect(approach).toBeLessThan(distance);
   await page.clock.runFor(230);
   expect(Number(await item.getAttribute('data-travel'))).toBeCloseTo(distance,3);
-  await expect(item).toHaveClass(/is-blocked/);await expect(head).toHaveAttribute('fill','#FF727E');
+  await expect(item).toHaveClass(/is-blocked/);await expect(head).toHaveAttribute('fill','#FFFFFF');
   await expect(page.getByText('다른 화살표에 막혀 있어요. 순서를 다시 생각해 보세요!')).toHaveCount(0);
   await page.screenshot({path:testInfo.outputPath('two-row-contact.png'),fullPage:true});
   await page.clock.runFor(270);
   const returning=Number(await item.getAttribute('data-travel'));expect(returning).toBeGreaterThan(0);expect(returning).toBeLessThan(approach);
-  await expect(head).toHaveAttribute('fill','#FF727E');
+  await expect(head).toHaveAttribute('fill','#FFFFFF');
   await page.clock.runFor(250);
   await expect(item).not.toHaveClass(/is-attempting/);await expect(item).toHaveClass(/is-blocked/);
   await expect(head).toHaveAttribute('transform',originalHead!);await expect(body).toHaveAttribute('d',originalBody!);
-  await expect(body).not.toHaveAttribute('mask');await expect(head).toHaveAttribute('fill','#FF727E');
+  await expect(body).not.toHaveAttribute('mask');await expect(head).toHaveAttribute('fill','#FFFFFF');
   await expect(page.getByText('다른 화살표에 막혀 있어요. 순서를 다시 생각해 보세요!')).toBeVisible();
   await expect(page.locator('[data-arrow]')).toHaveCount(37);
   await page.clock.runFor(1500);await expect(item).not.toHaveClass(/is-blocked/);

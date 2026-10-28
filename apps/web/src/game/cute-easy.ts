@@ -9,7 +9,7 @@ const ring=(letter:keyof typeof font,outer:number,inner:number,x:number,y:number
 type Glyph={strokes:readonly Stroke[];rings?:readonly RingDefinition[]};
 
 // Reviewed pen joints in the original complete glyph. No direction-based crops.
-const glyphs:Record<string,Glyph>={
+export const glyphs:Record<string,Glyph>={
   '아':{rings:[ring('아',0,1,290,-442)],strokes:[
     pen('a-upper','ㅏ','M662 -827 L745 -827 L745 -466 L893 -466 L893 -396 L662 -396 Z',
       'M893 -431 L703.5 -431 L703.5 -827',p(703.5,-789),p(0,-1),83),

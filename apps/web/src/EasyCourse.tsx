@@ -40,7 +40,7 @@ export function EasyCourse({onHome}:{onHome:()=>void}){
       <div className="course-caption"><span>{course.puzzles.length}문제</span><span>이번에 구한 문제 <strong>{course.puzzles.filter((_,i)=>cleared.has(`${difficulty}-${i}`)).length} / {course.puzzles.length}</strong></span></div>
       <div className={`lesson-grid ${course.puzzles.length===1?'single-lesson':''}`}>{course.puzzles.map((puzzle,i)=><button key={puzzle.letter} className={`lesson-choice ${cleared.has(`${difficulty}-${i}`)?'is-cleared':''}`} data-lesson-index={i}
         aria-label={`${i+1}. ${puzzle.letter} 시작${cleared.has(`${difficulty}-${i}`)?' (완료)':''}`} onClick={()=>setActive(i)}>
-        <span className="lesson-number">{i+1}</span><strong>{puzzle.letter.replace(' / ','\n')}</strong>
+        <span className="lesson-number">{i+1}</span><strong>{puzzle.letter.split(' / ').map(line=><span key={line}>{line}</span>)}</strong>
         <span className="lesson-detail">획 {puzzle.arrows.length}개 · 친구 {puzzle.targets.length}명</span>
         <span className="lesson-state">{cleared.has(`${difficulty}-${i}`)?'✓ 구출 완료':'구하러 가기 →'}</span>
       </button>)}</div>

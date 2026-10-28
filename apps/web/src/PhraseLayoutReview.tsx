@@ -3,6 +3,7 @@ import { pathData } from './game/vector-shape';
 import { headGeometry, readableHead } from './game/pen-stroke';
 import { RescueTarget } from './RescueFriends';
 import { useMood } from './MoodContext';
+import { StrokeEnd } from './StrokeEnd';
 
 const layouts=[
   {name:'기존 · 2줄',puzzle:createPhrasePuzzle()},
@@ -10,7 +11,7 @@ const layouts=[
 ];
 
 export function PhraseLayoutReview(){
-  const {colors}=useMood();
+  const {colors,id}=useMood();
   return <section className="layout-review" aria-labelledby="layout-review-title">
     <h3 id="layout-review-title">글자와 화살표 크기를 비교해요</h3>
     <p>한 줄 최대 네 글자로 나눈 문제를 아래에서 직접 풀어 보세요.</p>
@@ -22,7 +23,8 @@ export function PhraseLayoutReview(){
           const head=headGeometry(readableHead(arrow));
           return <g key={arrow.id}>
             <path d={pathData(arrow.shape!.commands)} fill={colors.body} fillRule="evenodd"/>
-            <path d={head.d} transform={head.transform} fill={colors.head} stroke={colors.hover} strokeWidth={1} strokeLinejoin="round"/>
+            {id!=='calm'&&<StrokeEnd arrow={arrow}/>}
+            <path d={head.d} transform={head.transform} fill={id==='calm'?colors.head:'#FFFFFF'} stroke={colors.hover} strokeWidth={1} strokeLinejoin="round"/>
           </g>;
         })}
       </svg>

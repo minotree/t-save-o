@@ -1,7 +1,7 @@
 import { assembleGlyphPuzzle } from './success-puzzle';
 import type { GlyphCell, RingDefinition, Stroke } from './success-puzzle';
 import type { Point } from './engine';
-import type { PathCommand } from './vector-shape';
+import { reverseArrow } from './reverse-arrow';
 const p=(x:number,y:number):Point=>({x,y});
 const pen=(key:string,jamo:string,body:string,spine:string,marker:Point,direction:Point,width=80):Stroke=>({key,jamo,body,spine,marker,direction,width});
 function rect(key:string,jamo:string,x0:number,y0:number,x1:number,y1:number,heading:'U'|'D'|'L'|'R'):Stroke {
@@ -97,32 +97,16 @@ export function createPhrasePuzzle(layout:'original'|'four-per-line'|'four-per-l
     // Explicit new puzzle data: reverse these writing paths to use their other
     // natural terminal. Body contours and the collision engine remain unchanged.
     const reversed=new Set(['jeo-jieut-bar','jeo-jieut-left','jeo-eo-bar','him-i']);
-    return {...puzzle,arrows:puzzle.arrows.map(arrow=>{
-      if(!reversed.has(arrow.id))return arrow;
-      const commands=arrow.rope!.path,segments:{command:PathCommand;from:Point}[]=[];
-      let current:Point={x:0,y:0};
-      for(const command of commands){
-        if(command.type==='Z')throw new Error('Expected an open writing path');
-        if(command.type!=='M')segments.push({command,from:current});
-        current=p(command.x,command.y);
-      }
-      const path:PathCommand[]=[{type:'M',...current}];
-      for(const {command,from} of segments.reverse()){
-        if(command.type==='C')path.push({type:'C',x1:command.x2,y1:command.y2,x2:command.x1,y2:command.y1,...from});
-        else if(command.type==='Q')path.push({type:'Q',x1:command.x1,y1:command.y1,...from});
-        else path.push({type:'L',...from});
-      }
-      const points=[...arrow.points].reverse(),cap=points.at(-1)!,previous=points.at(-2)!;
-      const dx=cap.x-previous.x,dy=cap.y-previous.y,m=Math.hypot(dx,dy),direction=p(dx/m,dy/m);
-      const anchor=p(cap.x-direction.x*(11.02+arrow.head!.length!),cap.y-direction.y*(11.02+arrow.head!.length!));
-      const heading=Math.abs(direction.x)<.001?(direction.y<0?'위':'아래')
-        :Math.abs(direction.y)<.001?(direction.x<0?'왼쪽':'오른쪽')
-        :`${direction.x<0?'왼쪽':'오른쪽'} ${direction.y<0?'위':'아래'}`;
-      return {...arrow,points,direction,label:`${arrow.label.split(',')[0]}, ${heading} 방향`,
-        rope:{...arrow.rope!,path},head:{...arrow.head!,anchor,direction,capCenter:cap}};
-    })};
+    return {...puzzle,arrows:puzzle.arrows.map(arrow=>reversed.has(arrow.id)?reverseArrow(arrow):arrow)};
   }
   return assembleGlyphPuzzle(cells,'우리가 저마다 / 힘에겨운',1830,700);
 }
 
 export { rect, pen, wu };
+
+// Reviewed full-glyph bodies reused by the authored course boards.
+export const phraseGlyphs:Record<string,Omit<GlyphCell,'letter'|'origin'>>={
+  '우':{strokes:[rect('wu-u-bar','ㅜ',49,-309,869,-240,'L'),rect('wu-u-stem','ㅜ',416,-240,498,78,'D')],ring:wu},
+  '리':{strokes:ri},'가':{strokes:ga},'저':{strokes:jeo},'마':{strokes:ma},'다':{strokes:da},
+  '힘':{strokes:him,ring:hieut},'에':{strokes:e,ring:eRing},'겨':{strokes:gyeo},'운':{strokes:un,ring:unRing}
+};

@@ -103,7 +103,7 @@ export function Game({onHome,puzzle=reviewPuzzle,lesson,onChoose,onNext,onSolved
     </header>
     {lesson&&<div className="lesson-nav"><span>{lesson.difficulty??'쉬움'} · {lesson.index+1} / {lesson.total}</span><button className="secondary-action" onClick={onChoose}>문제 목록</button></div>}
     <section className={`puzzle-card ${lesson?'lesson-card':''}`} aria-label={`${puzzle.letter} 퍼즐`}>
-      <div className="puzzle-caption"><span>{lesson?(puzzle.letter.includes(' / ')?`${puzzle.letter.split(' / ').length}줄 문장`:'한 줄 단어'):'첫 번째 구출'}</span><span>{lesson&&!puzzle.letter.includes(' / ')?'오늘의 단어':'오늘의 문장'} <strong>{puzzle.letter.split(' / ').map(line=><span key={line}>{line}</span>)}</strong></span></div>
+      <div className="puzzle-caption"><span>{lesson?`${puzzle.letter.split(' / ').length}줄 문제`:'첫 번째 구출'}</span><span>{lesson?'오늘의 문제':'오늘의 문장'} <strong>{puzzle.letter.split(' / ').map(line=><span key={line}>{line}</span>)}</strong></span></div>
       {mood.id==='cute'&&<GameProgress removed={removed.length} total={puzzle.arrows.length} friends={puzzle.targets.length}/>}
       <div className="board-frame" role="region" aria-label="한글 퍼즐" style={lesson?{maxWidth:puzzle.width,marginInline:'auto'}:undefined}>
       <svg className={`board phrase-board ${complete ? 'is-complete' : ''}`} viewBox={`0 0 ${puzzle.width} ${puzzle.height}`} aria-labelledby="board-title board-description">

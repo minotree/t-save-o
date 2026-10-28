@@ -23,7 +23,8 @@ export function friendLayout(target:Target,index:number,count:number,board:Pick<
     {x:target.center.x+target.radius,y:target.center.y+target.radius}];
   const width=Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x));
   const height=Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y));
-  const scale=Math.min(138/width,104/height);
-  return {x:board.width/2+(index-(count-1)/2)*FRIEND_SPACING,y:board.height*.55,
-    scale,halfWidth:width*scale/2,halfHeight:height*scale/2};
+  const spacing=Math.min(FRIEND_SPACING,(board.width-60)/count);
+  const scale=Math.min(138/width,104/height)*spacing/FRIEND_SPACING;
+  return {x:board.width/2+(index-(count-1)/2)*spacing,y:board.height*.55,
+    spacing,scale,halfWidth:width*scale/2,halfHeight:height*scale/2};
 }

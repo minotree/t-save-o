@@ -1,8 +1,8 @@
 import { expect,test } from '@playwright/test';
 
 for(const mood of [
-  {id:'cute',name:'아기자기',body:'#258C78',head:'#FF8A80',blocked:'#FF727E'},
-  {id:'modern',name:'모던',body:'#385A70',head:'#FF8A80',blocked:'#FF727E'},
+  {id:'cute',name:'아기자기',body:'#258C78',head:'#FFFFFF',blocked:'#FF727E'},
+  {id:'modern',name:'모던',body:'#385A70',head:'#FFFFFF',blocked:'#FF727E'},
   {id:'calm',name:'여유',body:'#315B4B',head:'#FFF17A',blocked:'#D94A58'},
 ]){
   test(`${mood.name}: select atmosphere, shared gameplay, return home with selection`,async({page},testInfo)=>{
@@ -33,7 +33,8 @@ for(const mood of [
     await expect(page.getByText('좌우로 밀어 전체 글자를 살펴보세요.')).toHaveCount(0);
     const blocked=page.locator(`[data-arrow="${blockedId}"]`);
     await blocked.focus();await page.keyboard.press('Enter');await page.clock.runFor(430);
-    await expect(blocked.locator('.arrow-head')).toHaveAttribute('fill',mood.blocked);
+    await expect(blocked.locator('.arrow-head')).toHaveAttribute('fill',mood.id==='calm'?mood.blocked:'#FFFFFF');
+    if(mood.id!=='calm')await expect(blocked.locator('.stroke-end')).toHaveAttribute('data-end-color',mood.blocked);
     await page.clock.runFor(550);await expect(blocked).not.toHaveClass(/is-attempting/);
     await expect(blocked.locator('.arrow-body')).toHaveAttribute('d',initial!);
     await expect(page.locator('[data-arrow]')).toHaveCount(count);

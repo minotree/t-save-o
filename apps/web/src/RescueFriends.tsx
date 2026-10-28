@@ -23,7 +23,7 @@ export function RescueParade({puzzle,onFinished}:{puzzle:Puzzle;onFinished?:()=>
     const tick=(now:number)=>{const t=Math.min(PARADE_MS,now-start);setElapsed(t);if(t<PARADE_MS)raf=requestAnimationFrame(tick);};
     raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf);
   },[]);
-  const frame=paradeFrame(elapsed),exit=frame.walk*(puzzle.width+puzzle.targets.length*FRIEND_SPACING);
+  const frame=paradeFrame(elapsed),exit=frame.walk*(puzzle.width+puzzle.targets.length*(layouts[0]?.spacing??FRIEND_SPACING));
   useEffect(()=>{if(frame.phase==='gone')onFinished?.();},[frame.phase,onFinished]);
   return <g className={`rescue-parade ${frame.phase==='walking'?'is-walking':''}`} data-phase={frame.phase}
     aria-label="구출된 ㅇ들이 모여 손을 잡고 떠나요" pointerEvents="none">
@@ -33,10 +33,10 @@ export function RescueParade({puzzle,onFinished}:{puzzle:Puzzle;onFinished?:()=>
         const y=target.center.y+(layout.y-target.center.y)*frame.gather,scale=1+(layout.scale-1)*frame.gather;
         return <g key={target.id} className="rescued-friend" data-friend={target.id} transform={`translate(${x} ${y})`}>
           <g className="friend-limbs" opacity={frame.limbs} transform={`scale(${frame.limbs})`}>
-            <path className="friend-arm" d={`M${-layout.halfWidth*.9} 0 Q${-layout.halfWidth-10} 18 ${-FRIEND_SPACING/2} 12`}/>
-            <path className="friend-arm" d={`M${layout.halfWidth*.9} 0 Q${layout.halfWidth+10} 18 ${FRIEND_SPACING/2} 12`}/>
-            <circle className="friend-hand" cx={-FRIEND_SPACING/2} cy="12" r="5"/>
-            <circle className="friend-hand" cx={FRIEND_SPACING/2} cy="12" r="5"/>
+            <path className="friend-arm" d={`M${-layout.halfWidth*.9} 0 Q${-layout.halfWidth-10} 18 ${-layout.spacing/2} 12`}/>
+            <path className="friend-arm" d={`M${layout.halfWidth*.9} 0 Q${layout.halfWidth+10} 18 ${layout.spacing/2} 12`}/>
+            <circle className="friend-hand" cx={-layout.spacing/2} cy="12" r="5"/>
+            <circle className="friend-hand" cx={layout.spacing/2} cy="12" r="5"/>
             <g className="friend-leg left" style={{transformOrigin:`-18px ${layout.halfHeight-4}px`}}>
               <path d={`M-18 ${layout.halfHeight-4} L-23 ${layout.halfHeight+26} l-12 1`}/>
             </g>

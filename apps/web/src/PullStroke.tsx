@@ -6,13 +6,15 @@ import { headGeometry, readableHead } from './game/pen-stroke';
 import { BUMP_MS, bumpHasContact, bumpProgress, measureRope, PULL_MS, ropeFrame } from './game/rope';
 import { headTip } from './game/engine';
 import { useMood } from './MoodContext';
+import { StrokeEnd } from './StrokeEnd';
 
 export function PullStroke({arrow,board,exiting,attemptDistance,busy,blocked,onSelect,onKeyDown}:{
   arrow:Arrow;board:Puzzle;exiting:boolean;busy:boolean;blocked:boolean;
   attemptDistance?:number;
   onSelect:()=>void;onKeyDown:(event:KeyboardEvent<SVGGElement>)=>void;
 }){
-  const {colors}=useMood();
+  const {colors,id:moodId}=useMood();
+  const multicolor=moodId!=='calm';
   const [progress,setProgress]=useState(0),id=useId().replace(/:/g,'');
   const rope=useMemo(()=>measureRope(arrow),[arrow]);
   useEffect(()=>{
@@ -56,7 +58,9 @@ export function PullStroke({arrow,board,exiting,attemptDistance,busy,blocked,onS
     <path d={d} className="arrow-body" fillRule="evenodd" style={{strokeWidth:0,fill:'currentColor'}} mask={active?`url(#${id})`:undefined}/>
     {active&&extension>0&&<path className="pulled-rope" d={`M${from.x},${from.y} L${to.x},${to.y}`}
       fill="none" stroke="currentColor" strokeWidth={width} strokeLinecap="butt" pointerEvents="none"/>}
-    <path d={headShape.d} className="arrow-head" fill={red?colors.blocked:colors.head}
+    {multicolor&&<StrokeEnd arrow={arrow} shift={shift} extension={active?extension:0}
+      mask={active?`url(#${id})`:undefined} color={red?colors.blocked:undefined}/>}
+    <path d={headShape.d} className="arrow-head" fill={multicolor?'#FFFFFF':red?colors.blocked:colors.head}
       pointerEvents="none" transform={`translate(${frame.unit.x*shift} ${frame.unit.y*shift}) ${headShape.transform}`} aria-hidden="true"/>
   </g>;
 }
