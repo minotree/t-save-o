@@ -78,13 +78,21 @@ const un:Stroke[]=[rect('un-u-bar','ㅜ',49,-368,869,-300,'R'),rect('un-u-stem',
   pen('un-nieun','ㄴ','M154 -206 L237 -206 L237 -11 L778 -11 L778 58 L154 58 Z',
     'M195.5 -206 L195.5 23.5 L778 23.5',p(740,23.5),p(1,0),76)];
 
-export function createPhrasePuzzle(){
+export function createPhrasePuzzle(layout:'original'|'four-per-line'='original'){
   const cells:GlyphCell[]=[
     {letter:'우',strokes:[rect('wu-u-bar','ㅜ',49,-309,869,-240,'L'),rect('wu-u-stem','ㅜ',416,-240,498,78,'D')],origin:p(22,285),ring:wu},
     {letter:'리',strokes:ri,origin:p(316,285)},{letter:'가',strokes:ga,origin:p(610,285)},
     {letter:'저',strokes:jeo,origin:p(944,285)},{letter:'마',strokes:ma,origin:p(1238,285)},{letter:'다',strokes:da,origin:p(1532,285)},
     {letter:'힘',strokes:him,origin:p(180,615),ring:hieut},{letter:'에',strokes:e,origin:p(474,615),ring:eRing},
     {letter:'겨',strokes:gyeo,origin:p(768,615)},{letter:'운',strokes:un,origin:p(1062,615),ring:unRing}];
+  if(layout==='four-per-line'){
+    // Design comparison: preserve word boundaries, font geometry and directions.
+    const origins=[p(169,285),p(463,285),p(757,285),
+      p(169,615),p(463,615),p(757,615),
+      p(22,945),p(316,945),p(610,945),p(904,945)];
+    return assembleGlyphPuzzle(cells.map((cell,i)=>({...cell,origin:origins[i]})),
+      '우리가 / 저마다 / 힘에겨운',1230,1030);
+  }
   return assembleGlyphPuzzle(cells,'우리가 저마다 / 힘에겨운',1830,700);
 }
 

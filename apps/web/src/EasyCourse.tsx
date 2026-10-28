@@ -2,6 +2,7 @@
 import { Game } from './Game';
 import { cuteCourses } from './game/cute-courses';
 import type { CuteDifficulty } from './game/cute-courses';
+import { PhraseLayoutReview } from './PhraseLayoutReview';
 
 export function EasyCourse({onHome}:{onHome:()=>void}){
   const [difficulty,setDifficulty]=useState<CuteDifficulty|null>(null);
@@ -35,6 +36,7 @@ export function EasyCourse({onHome}:{onHome:()=>void}){
       <p className="home-footnote">시간 제한 없이, 내 속도로 즐겨요.</p>
     </>:<>
       <button className="course-back secondary-action" onClick={()=>setDifficulty(null)}>← 난이도 선택</button>
+      {difficulty==='hard'&&<PhraseLayoutReview/>}
       <div className="course-caption"><span>{course.puzzles.length}문제</span><span>이번에 구한 문제 <strong>{course.puzzles.filter((_,i)=>cleared.has(`${difficulty}-${i}`)).length} / {course.puzzles.length}</strong></span></div>
       <div className={`lesson-grid ${course.puzzles.length===1?'single-lesson':''}`}>{course.puzzles.map((puzzle,i)=><button key={puzzle.letter} className={`lesson-choice ${cleared.has(`${difficulty}-${i}`)?'is-cleared':''}`} data-lesson-index={i}
         aria-label={`${i+1}. ${puzzle.letter} 시작${cleared.has(`${difficulty}-${i}`)?' (완료)':''}`} onClick={()=>setActive(i)}>
