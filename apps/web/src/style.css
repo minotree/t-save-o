@@ -1,6 +1,13 @@
-﻿:root { font-family: 'Arial Rounded MT Bold', system-ui, -apple-system, sans-serif; color: #684832; background: #FFF5D9; font-synthesis: none; line-height: 1.65; --orange: #FFB84D; --mint: #43C6AC; --coral: #FF727E; }
+:root { font-family: 'Arial Rounded MT Bold', system-ui, -apple-system, sans-serif; color: #684832; background: #FFF5D9; font-synthesis: none; line-height: 1.65; --orange: #FFB84D; --mint: #43C6AC; --coral: #FF727E; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 280px; }
+/* Reserve the current Toss fixed banner recommendation; actual creatives may grow. */
+.app-shell { height:100dvh; display:flex; flex-direction:column; overflow:hidden; }
+.app-shell > main { flex:1; min-height:0; width:100%; overflow-y:auto; overscroll-behavior-y:contain; }
+.banner-reservation { flex:none; width:100%; background:var(--surface,#FFFCF2); border-top:1px solid var(--border,#F7DEAA); }
+.banner-placeholder { min-height:102px; display:grid; place-items:center; color:var(--muted,#80644E); font-size:12px; }
+.banner-placeholder span { padding:3px 10px; border:1px solid var(--border,#F7DEAA); border-radius:4px; }
+.banner-safe-area { height:env(safe-area-inset-bottom,0px); }
 main { max-width: 480px; margin: auto; padding: max(24px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); text-align: center; }
 .eyebrow { font-size: .75rem; letter-spacing: .1em; color: #80644e; }
 h1 { font-size: clamp(2.4rem, 9vw, 3rem); margin: 4px 0; letter-spacing: -.06em; font-weight: 900; }
@@ -66,7 +73,7 @@ button:focus-visible { outline: 3px solid #a96312; outline-offset: 4px; }
 @media (prefers-reduced-motion: reduce) { .arrow { transition: none; } .is-complete .rescue-target { animation: none; } .start-button { transition: none; } }
 
 /* Atmosphere is presentation only. Puzzle geometry and animation timing stay shared. */
-.app-shell { --page:#FFF5D9; --surface:#FFFCF2; --ink:#684832; --muted:#80644E; --accent:#FFB84D; --accent-ink:#684321; --border:#F7DEAA; --soft:#DDF5EA; --soft-ink:#216F60; --face:#684832; --limb:#E89B33; min-height:100svh; background:var(--page); color:var(--ink); }
+.app-shell { --page:#FFF5D9; --surface:#FFFCF2; --ink:#684832; --muted:#80644E; --accent:#FFB84D; --accent-ink:#684321; --border:#F7DEAA; --soft:#DDF5EA; --soft-ink:#216F60; --face:#684832; --limb:#E89B33; min-height:0; background:var(--page); color:var(--ink); }
 .app-shell[data-mood="modern"] { --page:#EDF1F5; --surface:#FFFFFF; --ink:#243747; --muted:#546879; --accent:#345A76; --accent-ink:#FFFFFF; --border:#CDD8E1; --soft:#DEE8F0; --soft-ink:#2C506B; --orange:#C69551; --mint:#779EAF; --face:#243747; --limb:#9B7038; font-family:system-ui,-apple-system,sans-serif; }
 .app-shell[data-mood="calm"] { --page:#F5F1E7; --surface:#FFFEF9; --ink:#243D33; --muted:#496052; --accent:#315B4B; --accent-ink:#FFFFFF; --border:#C6D0BF; --soft:#E6EBDD; --soft-ink:#294A3D; --orange:#B57C29; --mint:#6D8B64; --face:#243D33; --limb:#966620; }
 .app-shell .eyebrow,.app-shell .game-heading p,.app-shell .puzzle-caption,.app-shell .how-to,.app-shell .pwa-status,.app-shell .home-heading p,.app-shell .home-footnote,.app-shell .board-scroll-hint { color:var(--muted); }
@@ -82,7 +89,7 @@ button:focus-visible { outline: 3px solid #a96312; outline-offset: 4px; }
 .app-shell .feedback.success { color:var(--soft-ink); }
 .app-shell .start-button:hover { filter:brightness(1.05); background:var(--accent); }
 .home-screen { max-width:1000px; }
-.home-content { min-height:calc(100svh - 60px); gap:16px; padding:16px 0; }
+.home-content { min-height:calc(100dvh - 163px - env(safe-area-inset-bottom,0px)); gap:16px; padding:16px 0; }
 .home-heading h1 { margin:12px 0 8px; }
 .home-mascot { width:140px; margin:0; }
 .mood-picker { width:100%; border:0; padding:0; margin:0; min-width:0; }
@@ -207,3 +214,32 @@ button:focus-visible { outline: 3px solid #a96312; outline-offset: 4px; }
 .lesson-card { max-width:780px; margin-inline:auto; }
 .completion-card .completed-word { margin-top:12px; color:var(--ink); font-size:1.6rem; font-weight:800; }
 @media(max-width:699px) { .lesson-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .course-caption { font-size:.8rem; } }
+
+/* Keep the home action above the reserved banner on phone screens. */
+@media(max-width:599px) {
+  .app-shell > .home-screen { padding-top:max(10px,env(safe-area-inset-top)); padding-bottom:10px; }
+  .home-screen .home-content { min-height:0; gap:9px; padding:0; justify-content:flex-start; }
+  .home-screen .home-heading h1 { font-size:2.8rem; margin:7px 0 4px; }
+  .home-screen .home-badge { padding:3px 12px; font-size:.7rem; }
+  .home-screen .home-heading p { font-size:.78rem; }
+  .home-screen .home-mascot { width:86px; margin:0; }
+  .home-screen .mood-picker legend { font-size:1.1rem; }
+  .home-screen .mood-help { margin:2px 0 9px; font-size:.78rem; }
+  .home-screen .mood-options { gap:8px; }
+  .home-screen .mood-option { grid-template-columns:72px 1fr; column-gap:9px; padding:7px 10px; border-radius:16px; }
+  .home-screen .mood-preview { width:72px; height:48px; }
+  .home-screen .mood-title { font-size:1rem; }
+  .home-screen .mood-description { font-size:.75rem; margin:0; }
+  .home-screen .mood-invitation { font-size:.78rem; margin:0; }
+  .home-screen .play-guide summary { padding:8px 12px; font-size:.8rem; }
+  .home-screen .start-button { min-height:52px; padding:10px 20px; font-size:1.1rem; }
+  .home-screen .home-footnote { font-size:.7rem; }
+}
+@media(max-width:599px) and (max-height:700px) {
+  .home-screen .home-content { gap:6px; }
+  .home-screen .home-mascot { width:56px; }
+  .home-screen .home-heading h1 { font-size:2.3rem; margin:4px 0 2px; }
+  .home-screen .mood-preview { height:40px; }
+  .home-screen .mood-option { padding:5px 8px; }
+  .home-screen .mood-help { margin-bottom:6px; }
+}

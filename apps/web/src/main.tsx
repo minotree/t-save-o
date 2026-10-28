@@ -18,7 +18,8 @@ function App() {
   const [update, setUpdate] = useState(false);
   const [failure, setFailure] = useState(false);
   const applyUpdate = useRef<ReturnType<typeof registerSW> | null>(null);
-  useEffect(()=>{window.scrollTo(0,0);},[started]);
+  const contentRef = useRef<HTMLElement>(null);
+  useEffect(()=>{contentRef.current?.scrollTo(0,0);},[started]);
   useEffect(() => {
     if (applyUpdate.current) return;
     applyUpdate.current = registerSW({
@@ -28,7 +29,7 @@ function App() {
     });
   }, []);
 
-  return <MoodContext.Provider value={mood}><div className="app-shell" data-mood={mood.id}><main className={started ? 'play-screen' : 'home-screen'}>
+  return <MoodContext.Provider value={mood}><div className="app-shell" data-mood={mood.id}><main ref={contentRef} className={started ? 'play-screen' : 'home-screen'}>
     {started ? <>
       <nav className="play-nav" aria-label="게임 메뉴"><button className="home-link" onClick={() => setStarted(false)}>← 홈으로</button><span className="active-mood">{mood.name}</span></nav>
       {mood.id==='cute'?<EasyCourse onHome={()=>setStarted(false)}/>:<Game onHome={()=>setStarted(false)}/>}
@@ -62,7 +63,7 @@ function App() {
       {update && <p>새 버전이 준비됐어요.</p>}
     </div>
     {update && <button onClick={() => { void applyUpdate.current?.(true).catch(() => setFailure(true)); }}>새 버전 열기</button>}
-  </main></div></MoodContext.Provider>;
+  </main><footer className="banner-reservation" aria-label="배너 광고 예정 영역"><div className="banner-placeholder"><span>광고 영역</span></div><div className="banner-safe-area" /></footer></div></MoodContext.Provider>;
 }
 
 const root = document.getElementById('root');

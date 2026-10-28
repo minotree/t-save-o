@@ -60,3 +60,9 @@ Cloudflare 정적 호스팅 후보: 빌드 명령 pnpm build, 출력 apps/web/di
 Supabase는 원격 퍼즐 배포 후보이며 스키마·키·인증 정책은 아직 없다. 현재 환경 변수 없이 실행한다. 키가 필요해지면 자리표시자만 있는 .env.example을 추가하고 실제 비밀값은 Git에서 제외한다.
 
 기획은 [docs/planning](docs/planning), 구조·기술 근거는 [docs/architecture.md](docs/architecture.md), 작업 기준은 [AGENTS.md](AGENTS.md), 실제 검사 상태는 [progress.md](progress.md)에 있다. PWA 다음 플랫폼 순서는 미정이며 기획의 웹·토스 동시 첫 출시 목표는 유지한다.
+
+## 하단 배너 공간
+
+모든 분위기의 홈·단어 목록·게임·완료 화면은 공통 앱 셸 하단에 배너 공간을 둔다. 현재는 광고 연결 없이 ‘광고 영역’ 자리표시자만 표시한다. 본문은 남은 높이에서 세로 스크롤하고 배너는 별도 flex 영역으로 유지하여 버튼이나 퍼즐과 겹치지 않는다. 하단 안전영역은 배너 아래에서 한 번 적용한다.
+
+2026-10-29 확인한 [토스 공식 WebView 배너 가이드](https://developers-apps-in-toss.toss.im/documentation/common/monetization/iaa/web-banner)는 화면 너비 100%, 고정형 권장 높이 102px(구형 SDK 3.0.5 미만은 96px)을 안내한다. 현재 자리표시자는 min-height 102px이며 최대 높이를 제한하지 않는다. 실제 광고 연결 시 내부 자리표시자를 제거하고 광고 콘텐츠 높이 변화에 맞춰 본문 영역이 줄어들도록 유지한다. 토스 SDK·광고 ID·실제 광고 호출은 아직 없다.
