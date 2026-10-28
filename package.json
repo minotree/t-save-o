@@ -1,0 +1,12 @@
+{
+  "name": "t-save-o",
+  "private": true,
+  "packageManager": "pnpm@10.34.7",
+  "engines": { "node": ">=24.22.0 <25" },
+  "scripts": {
+    "dev:web": "pnpm --filter @t-save-o/web dev",
+    "preview:web": "pnpm --filter @t-save-o/web preview",
+    "typecheck": "pnpm -r typecheck",
+    "build": "pnpm -r build"
+  }
+}
