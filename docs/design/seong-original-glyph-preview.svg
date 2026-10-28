@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="850" viewBox="0 0 900 850">
+<title>Noto Sans KR Regular 성 — original outline with interior direction marks</title>
+<desc>Unmodified complete font glyph. Yellow interior markers only; no stroke splitting or gameplay changes. SIL OFL 1.1; font license is in apps/web/scripts/font-source/OFL.txt.</desc>
+<rect width="900" height="850" fill="#FFF5D9"/>
+<defs><clipPath id="final"><rect x="0" y="-280" width="1000" height="400"/></clipPath></defs>
+<g transform="translate(162 670) scale(.68)">
+<path id="glyph" d="M496-265C309-265 195-202 195-94C195 14 309 76 496 76C683 76 797 14 797-94C797-202 683-265 496-265M496-199C632-199 715-160 715-94C715-29 632 10 496 10C360 10 277-29 277-94C277-160 360-199 496-199M278-776L278-683C278-544 188-423 49-374L93-307C202-348 283-431 321-538C360-444 436-371 536-334L581-399C449-444 360-558 360-686L360-776M514-636L514-567L711-567L711-292L794-292L794-827L711-827L711-636" fill="#258C78"/>
+<path d="M496-265C309-265 195-202 195-94C195 14 309 76 496 76C683 76 797 14 797-94C797-202 683-265 496-265M496-199C632-199 715-160 715-94C715-29 632 10 496 10C360 10 277-29 277-94C277-160 360-199 496-199M278-776L278-683C278-544 188-423 49-374L93-307C202-348 283-431 321-538C360-444 436-371 536-334L581-399C449-444 360-558 360-686L360-776M514-636L514-567L711-567L711-292L794-292L794-827L711-827L711-636" fill="#FFB84D" clip-path="url(#final)"/>
+<polygon points="319,-748 330,-726 308,-726" fill="#FFFF00"/>
+<polygon points="388.2276381775229,-487.9063169415002 409.72442538177285,-475.95273421935383 391.5628443223557,-463.53673754481247" fill="#FFFF00"/>
+<polygon points="752.5,-796 763.5,-774 741.5,-774" fill="#FFFF00"/>
+<polygon points="538,-601.5 560,-612.5 560,-590.5" fill="#FFFF00"/>
+<g fill="#6E4930"><circle cx="456" cy="-111" r="8"/><circle cx="536" cy="-111" r="8"/></g>
+<path d="M471 -77 Q496 -52 521 -77" fill="none" stroke="#6E4930" stroke-width="8" stroke-linecap="round"/>
+<g fill="#FFADB8"><ellipse cx="428" cy="-80" rx="13" ry="8"/><ellipse cx="564" cy="-80" rx="13" ry="8"/></g>
+</g></svg>

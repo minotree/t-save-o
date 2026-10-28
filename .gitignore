@@ -8,3 +8,5 @@ dist/
 .supabase/
 *.log
 coverage/
+test-results/
+playwright-report/

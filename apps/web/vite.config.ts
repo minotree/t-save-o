@@ -7,7 +7,7 @@ export default defineConfig({
     manifest: {
       name: 'ㅇ 구하기', short_name: 'ㅇ 구하기', lang: 'ko',
       description: '한글 자모 화살표 퍼즐',
-      theme_color: '#245c49', background_color: '#f7f6ee',
+      theme_color: '#FFF5D9', background_color: '#FFF5D9',
       display: 'standalone', start_url: '/', scope: '/',
       icons: [
         { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },

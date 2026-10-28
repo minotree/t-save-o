@@ -5,8 +5,10 @@
   "engines": { "node": ">=24.22.0 <25" },
   "scripts": {
     "dev:web": "pnpm --filter @t-save-o/web dev",
+    "pwa:web": "pnpm --filter @t-save-o/web build && pnpm --filter @t-save-o/web preview",
     "preview:web": "pnpm --filter @t-save-o/web preview",
     "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
     "build": "pnpm -r build"
   }
 }
