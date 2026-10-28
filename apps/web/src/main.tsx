@@ -11,6 +11,7 @@ import type { MoodId } from './moods';
 import './style.css';
 
 function App() {
+  const [tossPreview,setTossPreview] = useState(true);
   const [started, setStarted] = useState(false);
   const [moodId,setMoodId]=useState<MoodId>('cute');
   const mood=moods.find(item=>item.id===moodId)!;
@@ -29,7 +30,12 @@ function App() {
     });
   }, []);
 
-  return <MoodContext.Provider value={mood}><div className="app-shell" data-mood={mood.id}><main ref={contentRef} className={started ? 'play-screen' : 'home-screen'}>
+  return <MoodContext.Provider value={mood}><div className="app-shell" data-mood={mood.id} data-preview={tossPreview?'toss':undefined}>
+    {tossPreview&&<header className="toss-preview-header" aria-label="토스 상단 영역 모의 표시">
+      <div className="toss-preview-bar"><span aria-hidden="true">‹</span><span>토스 화면 미리보기</span><button className="preview-toggle" onClick={()=>setTossPreview(false)} aria-label="토스 상단 미리보기 끄기">×</button></div>
+    </header>}
+    {!tossPreview&&<div className="preview-switch"><button className="preview-toggle" onClick={()=>setTossPreview(true)}>토스 상단 미리보기 켜기</button></div>}
+    <main ref={contentRef} className={started ? 'play-screen' : 'home-screen'}>
     {started ? <>
       <nav className="play-nav" aria-label="게임 메뉴"><button className="home-link" onClick={() => setStarted(false)}>← 홈으로</button><span className="active-mood">{mood.name}</span></nav>
       {mood.id==='cute'?<EasyCourse onHome={()=>setStarted(false)}/>:<Game onHome={()=>setStarted(false)}/>}
