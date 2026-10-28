@@ -73,7 +73,7 @@ test('우리가 저마다 힘에겨운: mouse/touch, blocked return, full rescue
 test('interior high contrast heads and rope pulling: fixed body, tail clip, straight connected head',async({page,isMobile},testInfo)=>{
   await page.goto('/');await page.getByRole('radio',{name:/모던/}).check();await page.getByRole('button',{name:'게임 시작'}).click();
   const item=page.locator('[data-arrow="wu-u-bar"]'),head=item.locator('.arrow-head'),body=item.locator('.arrow-body');
-  await expect(head).toHaveAttribute('fill','#F4D576');
+  await expect(head).toHaveAttribute('fill','#FF8A80');
   const before=await head.evaluate(e=>{const m=(e as SVGPathElement).getScreenCTM()!;return {x:m.e,y:m.f,ux:m.a,uy:m.b};});
   const initialBody=await body.getAttribute('d'),group=await item.getAttribute('transform');
   await choose(page,item,isMobile);await expect(item).toHaveClass(/is-exiting/);

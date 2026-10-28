@@ -1,8 +1,8 @@
 import { expect,test } from '@playwright/test';
 
 for(const mood of [
-  {id:'cute',name:'아기자기',body:'#258C78',head:'#FFFF00',blocked:'#FF727E'},
-  {id:'modern',name:'모던',body:'#385A70',head:'#F4D576',blocked:'#FF727E'},
+  {id:'cute',name:'아기자기',body:'#258C78',head:'#FF8A80',blocked:'#FF727E'},
+  {id:'modern',name:'모던',body:'#385A70',head:'#FF8A80',blocked:'#FF727E'},
   {id:'calm',name:'여유',body:'#315B4B',head:'#FFF17A',blocked:'#D94A58'},
 ]){
   test(`${mood.name}: select atmosphere, shared gameplay, return home with selection`,async({page},testInfo)=>{

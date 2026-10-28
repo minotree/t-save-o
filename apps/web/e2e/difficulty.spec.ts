@@ -11,6 +11,7 @@ for(const difficulty of ['normal','hard']){
     await page.locator('[data-lesson-index="0"]').click();
     const count=difficulty==='normal'?13:37;
     await expect(page.locator('[data-arrow]')).toHaveCount(count);
+    if(difficulty==='hard')await page.screenshot({path:info.outputPath('hard-colored-arrows.png'),animations:'disabled'});
     const footer=page.locator('.banner-placeholder');
     expect(await footer.evaluate(e=>e.getBoundingClientRect().height)).toBe(102);
     expect(await page.locator('.board-frame').evaluate(e=>e.scrollWidth<=e.clientWidth+1)).toBe(true);
