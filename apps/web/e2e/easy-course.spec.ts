@@ -21,7 +21,7 @@ async function legal(page:Page,index:number){
 test('first easy word: real mouse/touch blocking, rope removal, replay, next and list',async({page,isMobile},testInfo)=>{
   await page.goto('/');await page.getByText('어떻게 구하나요?',{exact:false}).click();
   await expect(page.getByText('막히면 다른 획부터',{exact:true})).toBeVisible();
-  await page.getByRole('button',{name:'게임 시작'}).click();
+  await page.getByRole('button',{name:'게임 시작'}).click();await page.locator('[data-difficulty=easy]').click();
   await expect(page.locator('[data-lesson-index]')).toHaveCount(10);
   await page.screenshot({path:testInfo.outputPath('easy-list.png'),fullPage:true});
   await page.locator('[data-lesson-index="0"]').click();
@@ -46,7 +46,7 @@ test('first easy word: real mouse/touch blocking, rope removal, replay, next and
 });
 
 test('all ten easy words: sequential completion, no overflow, next resets and final list',async({page},testInfo)=>{
-  test.setTimeout(90000);await page.clock.install();await page.goto('/');await page.getByRole('button',{name:'게임 시작'}).click();
+  test.setTimeout(90000);await page.clock.install();await page.goto('/');await page.getByRole('button',{name:'게임 시작'}).click();await page.locator('[data-difficulty=easy]').click();
   await page.locator('[data-lesson-index="0"]').click();
   const words=['아이','오이','우유','아기','오리','여우','공','콩','양','용'];
   for(let index=0;index<10;index++){

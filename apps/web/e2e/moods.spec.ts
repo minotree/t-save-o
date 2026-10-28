@@ -14,6 +14,7 @@ for(const mood of [
     await page.screenshot({path:testInfo.outputPath(`home-${mood.id}.png`),fullPage:true,animations:'disabled'});
     expect(await page.locator('main').innerText()).not.toMatch(/초등|청소년|노년|연령|[0-9]+대/);
     await page.getByRole('button',{name:'게임 시작'}).click();
+    if(mood.id==='cute')await page.locator('[data-difficulty=easy]').click();
     if(mood.id==='cute')await page.locator('[data-lesson-index="0"]').click();
     const count=mood.id==='cute'?3:37,targets=mood.id==='cute'?2:4;
     const freeId=mood.id==='cute'?'easy-0-0-a-upper':'wu-u-bar';
@@ -41,6 +42,7 @@ for(const mood of [
     await page.getByRole('button',{name:'← 홈으로'}).click();
     await expect(page.getByRole('radio',{name:new RegExp(mood.name)})).toBeChecked();
     await page.getByRole('button',{name:'게임 시작'}).click();
+    if(mood.id==='cute')await page.locator('[data-difficulty=easy]').click();
     if(mood.id==='cute')await page.locator('[data-lesson-index="0"]').click();
     await expect(page.locator('[data-arrow]')).toHaveCount(count);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

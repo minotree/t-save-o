@@ -55,7 +55,7 @@ function App() {
       <p className="mood-invitation" aria-live="polite">{mood.invitation}</p>
       {mood.id==='cute'&&<PlayGuide/>}
       <button className="start-button" onClick={() => setStarted(true)}>게임 시작 <span aria-hidden="true">▶</span></button>
-      <p className="home-footnote">{mood.id==='cute'?'쉬움 단어 10개가 기다리고 있어요.':'서두르지 말고, 한 획씩 톡!'}</p>
+      <p className="home-footnote">{mood.id==='cute'?'쉬움·보통·어려움, 내 속도로 즐겨요.':'서두르지 말고, 한 획씩 톡!'}</p>
     </div>}
     <div className="pwa-status" role="status" aria-live="polite">
       {ready && <p>오프라인 플레이 준비가 됐어요.</p>}

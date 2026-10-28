@@ -31,12 +31,12 @@ export function GameProgress({removed,total,friends}:{removed:number;total:numbe
 }
 
 export function CompletionCard({friends,onReplay,onHome,word,lesson,onNext,onChoose}:{
-  friends:number;onReplay:()=>void;onHome:()=>void;word?:string;lesson?:{index:number;total:number};onNext?:()=>void;onChoose?:()=>void;
+  friends:number;onReplay:()=>void;onHome:()=>void;word?:string;lesson?:{index:number;total:number;difficulty?:string};onNext?:()=>void;onChoose?:()=>void;
 }){
   const heading=useRef<HTMLHeadingElement>(null);
   useEffect(()=>{heading.current?.focus();},[]);
   return <section className="completion-card" aria-labelledby="completion-title">
-    <span className="completion-badge">{lesson?`쉬움 · ${lesson.index+1} / ${lesson.total} 완료`:'오늘의 구출 완료'}</span>
+    <span className="completion-badge">{lesson?`${lesson.difficulty??'쉬움'} · ${lesson.index+1} / ${lesson.total} 완료`:'오늘의 구출 완료'}</span>
     {word&&<p className="completed-word">{word}</p>}
     <div className="completion-friends">{Array.from({length:friends},(_,i)=><FriendPortrait key={i} index={i}/>)}</div>
     <h2 ref={heading} id="completion-title" tabIndex={-1}>모두 함께 탈출했어요!</h2>

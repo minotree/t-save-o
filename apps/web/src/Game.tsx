@@ -14,7 +14,7 @@ const EXIT_MS = PULL_MS;
 const reviewPuzzle=createPhrasePuzzle();
 
 export function Game({onHome,puzzle=reviewPuzzle,lesson,onChoose,onNext,onSolved}:{
-  onHome:()=>void;puzzle?:Puzzle;lesson?:{index:number;total:number};onChoose?:()=>void;onNext?:()=>void;onSolved?:()=>void;
+  onHome:()=>void;puzzle?:Puzzle;lesson?:{index:number;total:number;difficulty?:string};onChoose?:()=>void;onNext?:()=>void;onSolved?:()=>void;
 }) {
   const mood=useMood();
 
@@ -101,9 +101,9 @@ export function Game({onHome,puzzle=reviewPuzzle,lesson,onChoose,onNext,onSolved
       <h1>ㅇ 구하기</h1>
       <p>{mood.id==='cute'?'한 획씩 길을 열어, 친구들을 만나 봐요.':'길을 열고, 동그라미를 구해 주세요.'}</p>
     </header>
-    {lesson&&<div className="lesson-nav"><span>쉬움 · {lesson.index+1} / {lesson.total}</span><button className="secondary-action" onClick={onChoose}>문제 목록</button></div>}
+    {lesson&&<div className="lesson-nav"><span>{lesson.difficulty??'쉬움'} · {lesson.index+1} / {lesson.total}</span><button className="secondary-action" onClick={onChoose}>문제 목록</button></div>}
     <section className={`puzzle-card ${lesson?'lesson-card':''}`} aria-label={`${puzzle.letter} 퍼즐`}>
-      <div className="puzzle-caption"><span>{lesson?'한 줄 단어':'첫 번째 구출'}</span><span>{lesson?'오늘의 단어':'오늘의 문장'} <strong>{puzzle.letter.split(' / ').map(line=><span key={line}>{line}</span>)}</strong></span></div>
+      <div className="puzzle-caption"><span>{lesson?(puzzle.letter.includes(' / ')?'두 줄 문장':'한 줄 단어'):'첫 번째 구출'}</span><span>{lesson&&!puzzle.letter.includes(' / ')?'오늘의 단어':'오늘의 문장'} <strong>{puzzle.letter.split(' / ').map(line=><span key={line}>{line}</span>)}</strong></span></div>
       {mood.id==='cute'&&<GameProgress removed={removed.length} total={puzzle.arrows.length} friends={puzzle.targets.length}/>}
       <div className="board-frame" role="region" aria-label="한글 퍼즐" style={lesson?{maxWidth:puzzle.width,marginInline:'auto'}:undefined}>
       <svg className={`board phrase-board ${complete ? 'is-complete' : ''}`} viewBox={`0 0 ${puzzle.width} ${puzzle.height}`} aria-labelledby="board-title board-description">
