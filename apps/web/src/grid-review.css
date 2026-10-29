@@ -1,0 +1,8 @@
+.grid-review .game-heading,.grid-review .puzzle-caption { display:none; }
+.grid-review main { max-width:520px; padding-top:16px; }
+.grid-review-heading h1 { font-size:2rem; }
+.grid-review-heading p { margin:4px 0 12px; font-size:.85rem; }
+.grid-review-heading label { display:inline-flex; align-items:center; gap:8px; min-height:44px; margin-bottom:10px; font-size:.85rem; cursor:pointer; }
+.grid-review-heading input { width:18px; height:18px; accent-color:#129B7B; }
+.grid-review .toss-preview-bar a { color:inherit; font-size:.8rem; }
+.grid-review .board { display:block; }

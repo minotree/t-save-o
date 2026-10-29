@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  build:{rolldownOptions:{input:{main:'index.html',gridReview:'grid-review.html'}}},
   plugins: [VitePWA({
     registerType: 'prompt',
     manifest: {

@@ -14,7 +14,7 @@ export function PullStroke({arrow,board,exiting,attemptDistance,busy,blocked,onS
   onSelect:()=>void;onKeyDown:(event:KeyboardEvent<SVGGElement>)=>void;
 }){
   const {colors,id:moodId}=useMood();
-  const multicolor=moodId!=='calm';
+  const multicolor=moodId!=='calm'&&!arrow.color;
   const [progress,setProgress]=useState(0),id=useId().replace(/:/g,'');
   const rope=useMemo(()=>measureRope(arrow),[arrow]);
   useEffect(()=>{
@@ -33,7 +33,14 @@ export function PullStroke({arrow,board,exiting,attemptDistance,busy,blocked,onS
   const fraction=exiting?progress:attempting?bumpProgress(progress):0;
   const frame=ropeFrame(rope,arrow.direction,board,fraction,attemptDistance);
   const d=pathData(arrow.shape!.commands);
-  const headShape=useMemo(()=>headGeometry(readableHead(arrow)),[arrow]);
+  const externalHead=board.waitingY!==undefined;
+  const headShape=useMemo(()=>{
+    if(!externalHead)return headGeometry(readableHead(arrow));
+    const cap=rope.points.at(-1)!;
+    // Display only: leave the collision ray and authored head untouched.
+    return headGeometry({...arrow.head!,length:18,width:18,
+      anchor:{x:cap.x,y:cap.y}});
+  },[arrow,rope,externalHead]);
   const suffix=frame.remaining.map((v,i)=>`${i?'L':'M'}${v.x},${v.y}`).join(' ');
   const width=arrow.rope!.width;
   const shift=frame.travel;
@@ -48,7 +55,7 @@ export function PullStroke({arrow,board,exiting,attemptDistance,busy,blocked,onS
   return <g data-arrow={arrow.id} data-progress={progress.toFixed(3)} data-travel={shift.toFixed(5)} data-contact={attemptDistance}
     data-direction={`${arrow.direction.x},${arrow.direction.y}`}
     role="button" tabIndex={busy?-1:0} aria-label={arrow.label} aria-disabled={busy}
-    style={{'--stroke-body':colors.body,'--stroke-blocked':colors.blocked,'--stroke-hover':colors.hover,'--head-outline':colors.hover} as CSSProperties}
+    style={{'--stroke-body':arrow.color??colors.body,'--stroke-blocked':colors.blocked,'--stroke-hover':arrow.color??colors.hover,'--head-outline':arrow.color??colors.hover} as CSSProperties}
     className={`arrow ${red?'is-blocked':''} ${exiting?'is-exiting':''} ${attempting?'is-attempting':''}`}
     onClick={onSelect} onKeyDown={onKeyDown}>
     <defs><mask id={id} maskUnits="userSpaceOnUse" x="-1000" y="-1000" width="4000" height="4000">
@@ -60,7 +67,7 @@ export function PullStroke({arrow,board,exiting,attemptDistance,busy,blocked,onS
       fill="none" stroke="currentColor" strokeWidth={width} strokeLinecap="butt" pointerEvents="none"/>}
     {multicolor&&<StrokeEnd arrow={arrow} shift={shift} extension={active?extension:0}
       mask={active?`url(#${id})`:undefined} color={red?colors.blocked:undefined}/>}
-    <path d={headShape.d} className="arrow-head" fill={multicolor?'#FFFFFF':red?colors.blocked:colors.head}
-      pointerEvents="none" transform={`translate(${frame.unit.x*shift} ${frame.unit.y*shift}) ${headShape.transform}`} aria-hidden="true"/>
+    <path d={headShape.d} className="arrow-head" fill={externalHead?'currentColor':arrow.color?'#FFFFFF':multicolor?'#FFFFFF':red?colors.blocked:colors.head}
+      pointerEvents={busy?'none':'fill'} transform={`translate(${frame.unit.x*shift} ${frame.unit.y*shift}) ${headShape.transform}`} aria-hidden="true"/>
   </g>;
 }

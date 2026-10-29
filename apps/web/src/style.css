@@ -46,6 +46,11 @@ h1 { font-size: clamp(2.4rem, 9vw, 3rem); margin: 4px 0; letter-spacing: -.06em;
 .arrow.is-attempting.is-blocked { transition: none; }
 .target-ring { fill: #FFFCF2; stroke: var(--orange); stroke-width: 7; }
 .font-target { fill: var(--orange); stroke: none; }
+.ai-demo-board .font-target { fill: #D99735; }
+.ai-demo-board .arrow-head { stroke: none; }
+.waiting-friend-idle { animation: friend-wait 1.8s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+@keyframes friend-wait { to { transform: translateY(-7px) rotate(3deg); } }
+@media (prefers-reduced-motion: reduce) { .waiting-friend-idle { animation: none; } }
 .arrow-head { stroke:var(--head-outline,#177A67); stroke-width:1; stroke-linejoin:round; paint-order:stroke fill; }
 .pulled-rope { pointer-events: none; }
 @media (min-width: 600px) { main.play-screen { max-width: 1240px; } }

@@ -14,12 +14,14 @@ export type Arrow = {
   penStroke?: PenStrokeDefinition;
   // Interior direction marker and a tail-to-head writing spine for rope pulling.
   rope?: { path: readonly import('./vector-shape').PathCommand[]; width: number };
+  color?: string;
 };
 // radius is the OUTER collision radius, including the visible ring thickness.
-export type Target = { id: string; center: Point; radius: number; ringWidth?: number; shape?: VectorShape; obstacle?: VectorShape };
+export type Target = { id: string; center: Point; radius: number; ringWidth?: number; shape?: VectorShape; obstacle?: VectorShape; requiredArrowIds?: readonly string[] };
 export type Puzzle = {
   width: number; height: number; letter: string;
   arrows: readonly Arrow[]; targets: readonly Target[];
+  waitingY?: number;
 };
 const EPS = 1e-8;
 const sub = (a: Point, b: Point): Point => ({ x: a.x - b.x, y: a.y - b.y });

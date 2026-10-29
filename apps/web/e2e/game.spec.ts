@@ -1,6 +1,45 @@
 import { expect, test } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
 
+test('touch accepts a small miss beside a thin stroke without requiring an exact fill hit',async({page,isMobile})=>{
+  test.skip(!isMobile,'Touch tolerance applies to touch and pen only');
+  await page.goto('/');await page.getByRole('radio',{name:/모던/}).check();await page.getByRole('button',{name:'게임 시작'}).click();
+  const item=page.locator('[data-arrow="wu-u-bar"]');
+  await item.scrollIntoViewIfNeeded();
+  const point=await item.locator('.arrow-head').evaluate(element=>{
+    const head=element as SVGPathElement,box=head.getBBox();
+    const center=new DOMPoint(box.width*.35,0).matrixTransform(head.getScreenCTM()!);
+    const board=head.ownerSVGElement!;
+    const paths=Array.from(board.querySelectorAll<SVGPathElement>('.arrow-hit'));
+    for(let r=1;r<=18;r++)for(let i=0;i<32;i++){
+      const p=new DOMPoint(center.x+Math.cos(i*Math.PI/16)*r,center.y+Math.sin(i*Math.PI/16)*r);
+      const inside=paths.some(path=>path.isPointInFill(p.matrixTransform(path.getScreenCTM()!.inverse())));
+      if(!inside)return {x:p.x,y:p.y};
+    }
+    throw new Error('No point outside the actual stroke found');
+  });
+  await page.touchscreen.tap(point.x,point.y);
+  await expect(item).toHaveClass(/is-exiting/);
+  await expect(item).toHaveCount(0);
+  await expect(page.locator('[data-arrow]')).toHaveCount(36);
+});
+
+test('touch drag and cancellation do not select arrows',async({page,isMobile})=>{
+  test.skip(!isMobile,'Touch gesture regression');
+  await page.goto('/');await page.getByRole('radio',{name:/모던/}).check();await page.getByRole('button',{name:'게임 시작'}).click();
+  const item=page.locator('[data-arrow="wu-u-bar"]');
+  const gesture={pointerId:1,pointerType:'touch',isPrimary:true,clientX:100,clientY:200};
+  await item.dispatchEvent('pointerdown',gesture);
+  await item.dispatchEvent('pointermove',{...gesture,clientY:225});
+  await item.dispatchEvent('pointerup',gesture);
+  await expect(item).not.toHaveClass(/is-exiting|is-attempting/);
+  await item.dispatchEvent('pointerdown',gesture);
+  await item.dispatchEvent('pointercancel',gesture);
+  await item.dispatchEvent('pointerup',gesture);
+  await expect(item).not.toHaveClass(/is-exiting|is-attempting/);
+  await expect(page.locator('[data-arrow]')).toHaveCount(37);
+});
+
 async function choose(page:Page,item:Locator,isMobile:boolean){
   await item.locator('.arrow-head').scrollIntoViewIfNeeded();
   const point=await item.locator('.arrow-head').evaluate(element=>{

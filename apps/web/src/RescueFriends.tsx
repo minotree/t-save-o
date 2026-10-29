@@ -2,6 +2,24 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Puzzle, Target } from './game/engine';
 import { pathData } from './game/vector-shape';
 import { friendLayout, FRIEND_SPACING, PARADE_MS, paradeFrame } from './game/rescue-parade';
+import { waitingPosition } from './game/ai-demo';
+
+export function WaitingFriend({target,puzzle,index,onArrived}:{target:Target;puzzle:Puzzle;index:number;onArrived:(id:string)=>void}){
+  const [progress,setProgress]=useState(0);
+  useEffect(()=>{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setProgress(1);return;}
+    let raf=0;const start=performance.now();
+    const tick=(now:number)=>{const t=Math.min(1,(now-start)/750);setProgress(t*t*(3-2*t));if(t<1)raf=requestAnimationFrame(tick);};
+    raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf);
+  },[]);
+  const p=waitingPosition(puzzle,index),scale=1+(p.scale-1)*progress;
+  useEffect(()=>{if(progress===1)onArrived(target.id);},[progress,onArrived,target.id]);
+  const x=target.center.x+(p.x-target.center.x)*progress,y=target.center.y+(p.y-target.center.y)*progress;
+  return <g data-waiting-friend={target.id} data-arrived={progress===1} pointerEvents="none"
+    transform={`translate(${x} ${y}) scale(${scale}) translate(${-target.center.x} ${-target.center.y})`}>
+    <g className={progress===1?'waiting-friend-idle':undefined}><RescueTarget target={target}/></g>
+  </g>;
+}
 
 export function RescueTarget({target}:{target:Target}){
   return <g className="rescue-target" aria-label="구출 대상 ㅇ">
@@ -16,7 +34,11 @@ export function RescueTarget({target}:{target:Target}){
 
 export function RescueParade({puzzle,onFinished}:{puzzle:Puzzle;onFinished?:()=>void}){
   const [elapsed,setElapsed]=useState(0);
-  const layouts=useMemo(()=>puzzle.targets.map((target,i)=>friendLayout(target,i,puzzle.targets.length,puzzle)),[puzzle]);
+  const layouts=useMemo(()=>puzzle.targets.map((target,i)=>{
+    const layout=friendLayout(target,i,puzzle.targets.length,puzzle);
+    return puzzle.waitingY===undefined?layout:{...layout,x:target.center.x,y:target.center.y,scale:1,
+      spacing:86,halfWidth:layout.halfWidth/layout.scale,halfHeight:layout.halfHeight/layout.scale};
+  }),[puzzle]);
   useEffect(()=>{
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setElapsed(PARADE_MS);return;}
     const start=performance.now();let raf=0;
